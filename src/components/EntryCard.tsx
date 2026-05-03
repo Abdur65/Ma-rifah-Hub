@@ -37,7 +37,7 @@ export function EntryCard({ entry, theme, linkHref }: Props) {
       <div className="px-8 py-7 space-y-6">
         {entry.arabic_text && (
           <div className={`border rounded-xl px-6 py-5 ${surfaceClass}`}>
-            <p className="arabic text-stone-800">{entry.arabic_text}</p>
+            <p className="arabic text-stone-800 whitespace-pre-wrap">{entry.arabic_text}</p>
           </div>
         )}
 
