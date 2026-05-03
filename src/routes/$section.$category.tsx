@@ -1,5 +1,5 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/$section/$category')({
+export const Route = createFileRoute("/$section/$category")({
   component: () => <Outlet />,
-})
+});

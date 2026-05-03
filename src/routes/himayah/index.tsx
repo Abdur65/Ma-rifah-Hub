@@ -1,37 +1,41 @@
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
-import { getAllEntries, deleteEntry } from '@/lib/adminQueries'
-import * as AlertDialog from '@radix-ui/react-alert-dialog'
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { getAllEntries, deleteEntry } from "@/lib/adminQueries";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
 
-export const Route = createFileRoute('/himayah/')({
+export const Route = createFileRoute("/himayah/")({
   component: AdminDashboard,
-})
+});
 
 function AdminDashboard() {
-  const queryClient = useQueryClient()
-  const navigate = useNavigate()
-  const [deletingId, setDeletingId] = useState<number | null>(null)
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const { data: entries, isLoading } = useQuery({
-    queryKey: ['admin-entries'],
-    queryFn: () => getAllEntries().then(r => r.data ?? []),
-  })
+    queryKey: ["admin-entries"],
+    queryFn: () => getAllEntries().then((r) => r.data ?? []),
+  });
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => deleteEntry(id),
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['admin-entries'] })
-      setDeletingId(null)
+      void queryClient.invalidateQueries({ queryKey: ["admin-entries"] });
+      setDeletingId(null);
     },
-  })
+  });
 
   return (
     <main className="max-w-5xl mx-auto px-6 py-10">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="font-[family-name:var(--font-lora)] text-3xl font-bold text-slate-900">Entries</h1>
-          <p className="text-slate-500 text-sm mt-1">{entries?.length ?? 0} published entries</p>
+          <h1 className="font-[family-name:var(--font-lora)] text-3xl font-bold text-slate-900">
+            Entries
+          </h1>
+          <p className="text-slate-500 text-sm mt-1">
+            {entries?.length ?? 0} published entries
+          </p>
         </div>
         <Link
           to="/himayah/new"
@@ -51,7 +55,12 @@ function AdminDashboard() {
       {!isLoading && entries?.length === 0 && (
         <div className="text-center py-20">
           <p className="text-slate-400 text-sm">No entries yet.</p>
-          <Link to="/himayah/new" className="text-slate-600 text-sm underline mt-2 inline-block">Publish your first entry</Link>
+          <Link
+            to="/himayah/new"
+            className="text-slate-600 text-sm underline mt-2 inline-block"
+          >
+            Publish your first entry
+          </Link>
         </div>
       )}
 
@@ -61,18 +70,31 @@ function AdminDashboard() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-200 bg-slate-50">
-                  <th className="text-left px-6 py-3.5 font-medium text-slate-600">Heading</th>
-                  <th className="text-left px-6 py-3.5 font-medium text-slate-600 hidden md:table-cell">Section · Category</th>
-                  <th className="text-left px-6 py-3.5 font-medium text-slate-600 hidden lg:table-cell">Date</th>
+                  <th className="text-left px-6 py-3.5 font-medium text-slate-600">
+                    Heading
+                  </th>
+                  <th className="text-left px-6 py-3.5 font-medium text-slate-600 hidden md:table-cell">
+                    Section · Category
+                  </th>
+                  <th className="text-left px-6 py-3.5 font-medium text-slate-600 hidden lg:table-cell">
+                    Date
+                  </th>
                   <th className="px-6 py-3.5" />
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {entries.map(entry => {
-                  const cat = entry.category as { name: string; slug: string; section: { name: string; slug: string } } | null
-                  const isIslam = cat?.section.slug === 'islam'
+                {entries.map((entry) => {
+                  const cat = entry.category as {
+                    name: string;
+                    slug: string;
+                    section: { name: string; slug: string };
+                  } | null;
+                  const isIslam = cat?.section.slug === "islam";
                   return (
-                    <tr key={entry.id} className="hover:bg-slate-50 transition-colors">
+                    <tr
+                      key={entry.id}
+                      className="hover:bg-slate-50 transition-colors"
+                    >
                       <td className="px-6 py-4">
                         <span className="font-[family-name:var(--font-lora)] text-slate-800 font-medium line-clamp-1">
                           {entry.heading}
@@ -80,24 +102,39 @@ function AdminDashboard() {
                       </td>
                       <td className="px-6 py-4 hidden md:table-cell">
                         {cat && (
-                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${isIslam ? 'bg-islam-surface text-islam-primary' : 'bg-gk-surface text-gk-primary'}`}>
+                          <span
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${isIslam ? "bg-islam-surface text-islam-primary" : "bg-gk-surface text-gk-primary"}`}
+                          >
                             {cat.section.name} · {cat.name}
                           </span>
                         )}
                       </td>
                       <td className="px-6 py-4 text-slate-400 hidden lg:table-cell">
-                        {new Date(entry.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        {new Date(entry.created_at).toLocaleDateString(
+                          "en-GB",
+                          { day: "numeric", month: "short", year: "numeric" },
+                        )}
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2 justify-end">
                           <button
-                            onClick={() => void navigate({ to: '/himayah/edit/$id', params: { id: String(entry.id) } })}
+                            onClick={() =>
+                              void navigate({
+                                to: "/himayah/edit/$id",
+                                params: { id: String(entry.id) },
+                              })
+                            }
                             className="text-slate-500 hover:text-slate-800 transition-colors cursor-pointer px-3 py-1.5 rounded-lg hover:bg-slate-100 text-xs font-medium"
                           >
                             Edit
                           </button>
 
-                          <AlertDialog.Root open={deletingId === entry.id} onOpenChange={open => !open && setDeletingId(null)}>
+                          <AlertDialog.Root
+                            open={deletingId === entry.id}
+                            onOpenChange={(open) =>
+                              !open && setDeletingId(null)
+                            }
+                          >
                             <AlertDialog.Trigger asChild>
                               <button
                                 onClick={() => setDeletingId(entry.id)}
@@ -113,17 +150,26 @@ function AdminDashboard() {
                                   Delete this entry?
                                 </AlertDialog.Title>
                                 <AlertDialog.Description className="text-slate-500 text-sm mb-6">
-                                  "<span className="font-medium text-slate-700">{entry.heading}</span>" will be permanently deleted. This cannot be undone.
+                                  "
+                                  <span className="font-medium text-slate-700">
+                                    {entry.heading}
+                                  </span>
+                                  " will be permanently deleted. This cannot be
+                                  undone.
                                 </AlertDialog.Description>
                                 <div className="flex gap-3 justify-end">
                                   <AlertDialog.Cancel className="px-4 py-2 text-sm text-slate-600 hover:text-slate-800 transition-colors cursor-pointer rounded-xl hover:bg-slate-100">
                                     Cancel
                                   </AlertDialog.Cancel>
                                   <AlertDialog.Action
-                                    onClick={() => deleteMutation.mutate(entry.id)}
+                                    onClick={() =>
+                                      deleteMutation.mutate(entry.id)
+                                    }
                                     className="px-4 py-2 text-sm bg-red-600 hover:bg-red-700 text-white rounded-xl transition-colors cursor-pointer font-medium"
                                   >
-                                    {deleteMutation.isPending ? 'Deleting…' : 'Delete'}
+                                    {deleteMutation.isPending
+                                      ? "Deleting…"
+                                      : "Delete"}
                                   </AlertDialog.Action>
                                 </div>
                               </AlertDialog.Content>
@@ -132,7 +178,7 @@ function AdminDashboard() {
                         </div>
                       </td>
                     </tr>
-                  )
+                  );
                 })}
               </tbody>
             </table>
@@ -140,13 +186,23 @@ function AdminDashboard() {
         </div>
       )}
     </main>
-  )
+  );
 }
 
 function PlusIcon() {
   return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+    <svg
+      className="w-4 h-4"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M12 4v16m8-8H4"
+      />
     </svg>
-  )
+  );
 }
