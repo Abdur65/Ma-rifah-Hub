@@ -17,6 +17,7 @@ import { Route as HimayahIndexRouteImport } from './routes/himayah/index'
 import { Route as SectionIndexRouteImport } from './routes/$section.index'
 import { Route as HimayahNewRouteImport } from './routes/himayah/new'
 import { Route as HimayahLoginRouteImport } from './routes/himayah/login'
+import { Route as HimayahCategoriesRouteImport } from './routes/himayah/categories'
 import { Route as SectionCategoryRouteImport } from './routes/$section.$category'
 import { Route as SectionCategoryIndexRouteImport } from './routes/$section.$category.index'
 import { Route as HimayahEditIdRouteImport } from './routes/himayah/edit.$id'
@@ -62,6 +63,11 @@ const HimayahLoginRoute = HimayahLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => HimayahRoute,
 } as any)
+const HimayahCategoriesRoute = HimayahCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => HimayahRoute,
+} as any)
 const SectionCategoryRoute = SectionCategoryRouteImport.update({
   id: '/$category',
   path: '/$category',
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/himayah': typeof HimayahRouteWithChildren
   '/search': typeof SearchRoute
   '/$section/$category': typeof SectionCategoryRouteWithChildren
+  '/himayah/categories': typeof HimayahCategoriesRoute
   '/himayah/login': typeof HimayahLoginRoute
   '/himayah/new': typeof HimayahNewRoute
   '/$section/': typeof SectionIndexRoute
@@ -100,6 +107,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/search': typeof SearchRoute
+  '/himayah/categories': typeof HimayahCategoriesRoute
   '/himayah/login': typeof HimayahLoginRoute
   '/himayah/new': typeof HimayahNewRoute
   '/$section': typeof SectionIndexRoute
@@ -115,6 +123,7 @@ export interface FileRoutesById {
   '/himayah': typeof HimayahRouteWithChildren
   '/search': typeof SearchRoute
   '/$section/$category': typeof SectionCategoryRouteWithChildren
+  '/himayah/categories': typeof HimayahCategoriesRoute
   '/himayah/login': typeof HimayahLoginRoute
   '/himayah/new': typeof HimayahNewRoute
   '/$section/': typeof SectionIndexRoute
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/himayah'
     | '/search'
     | '/$section/$category'
+    | '/himayah/categories'
     | '/himayah/login'
     | '/himayah/new'
     | '/$section/'
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/search'
+    | '/himayah/categories'
     | '/himayah/login'
     | '/himayah/new'
     | '/$section'
@@ -156,6 +167,7 @@ export interface FileRouteTypes {
     | '/himayah'
     | '/search'
     | '/$section/$category'
+    | '/himayah/categories'
     | '/himayah/login'
     | '/himayah/new'
     | '/$section/'
@@ -230,6 +242,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HimayahLoginRouteImport
       parentRoute: typeof HimayahRoute
     }
+    '/himayah/categories': {
+      id: '/himayah/categories'
+      path: '/categories'
+      fullPath: '/himayah/categories'
+      preLoaderRoute: typeof HimayahCategoriesRouteImport
+      parentRoute: typeof HimayahRoute
+    }
     '/$section/$category': {
       id: '/$section/$category'
       path: '/$category'
@@ -289,6 +308,7 @@ const SectionRouteWithChildren =
   SectionRoute._addFileChildren(SectionRouteChildren)
 
 interface HimayahRouteChildren {
+  HimayahCategoriesRoute: typeof HimayahCategoriesRoute
   HimayahLoginRoute: typeof HimayahLoginRoute
   HimayahNewRoute: typeof HimayahNewRoute
   HimayahIndexRoute: typeof HimayahIndexRoute
@@ -296,6 +316,7 @@ interface HimayahRouteChildren {
 }
 
 const HimayahRouteChildren: HimayahRouteChildren = {
+  HimayahCategoriesRoute: HimayahCategoriesRoute,
   HimayahLoginRoute: HimayahLoginRoute,
   HimayahNewRoute: HimayahNewRoute,
   HimayahIndexRoute: HimayahIndexRoute,

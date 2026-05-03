@@ -33,6 +33,9 @@ export const deleteEntry = (id: number) =>
 export const createCategory = (data: { section_id: number; name: string; slug: string; icon_name: string }) =>
   supabase.from('categories').insert(data).select().single()
 
+export const deleteCategory = (id: number) =>
+  supabase.from('categories').delete().eq('id', id)
+
 export const checkSlugAvailable = (categoryId: number, slug: string, excludeId?: number) =>
   supabase
     .from('entries')
