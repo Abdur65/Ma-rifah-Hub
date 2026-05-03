@@ -54,12 +54,12 @@ export function EntryCard({ entry, theme, linkHref }: Props) {
                 href={entry.reference}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-inter text-sm text-stone-500 italic hover:underline"
+                className="font-inter text-sm text-stone-500 italic hover:underline min-w-0 break-words"
               >
                 {entry.reference}
               </a>
             ) : (
-              <span className="font-inter text-sm text-stone-500 italic">{entry.reference}</span>
+              <span className="font-inter text-sm text-stone-500 italic min-w-0 break-words">{entry.reference}</span>
             )}
           </div>
         )}
