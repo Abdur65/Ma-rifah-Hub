@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  /* Fonts */
+  --font-lora: 'Lora', Georgia, serif;
+  --font-inter: 'Inter', sans-serif;
+  --font-amiri: 'Amiri', serif;
+
+  /* Islam theme */
+  --color-islam-primary: #2d6a4f;
+  --color-islam-accent:  #b5943a;
+  --color-islam-surface: #f5f0e8;
+  --color-islam-border:  #d4c9b0;
+  --color-islam-text:    #1a1a1a;
+
+  /* General Knowledge theme */
+  --color-gk-primary: #2c4a6e;
+  --color-gk-accent:  #6b7280;
+  --color-gk-surface: #f3f4f6;
+  --color-gk-border:  #d1d5db;
+  --color-gk-text:    #111827;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #fafaf9;
+  color: #1a1a1a;
+}
+
+/* Arabic text utility */
+.arabic {
+  font-family: 'Amiri', serif;
+  direction: rtl;
+  text-align: right;
+  font-size: 1.375rem;
+  line-height: 2.2;
+}
+
+/* TipTap editor and rendered body content */
+.tiptap-content h2 { font-size: 1.25rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.5rem; }
+.tiptap-content h3 { font-size: 1.1rem;  font-weight: 600; margin-top: 1rem;    margin-bottom: 0.4rem; }
+.tiptap-content p  { margin-bottom: 0.75rem; line-height: 1.75; }
+.tiptap-content ul,
+.tiptap-content ol { padding-left: 1.5rem; margin-bottom: 0.75rem; }
+.tiptap-content ul { list-style-type: disc; }
+.tiptap-content ol { list-style-type: decimal; }
+.tiptap-content li { margin-bottom: 0.25rem; line-height: 1.75; }
+.tiptap-content strong { font-weight: 600; }
+.tiptap-content em    { font-style: italic; }
+.tiptap-content table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.tiptap-content th,
+.tiptap-content td    { border: 1px solid #e5e7eb; padding: 0.5rem 0.75rem; text-align: left; }
+.tiptap-content th    { font-weight: 600; background: #f9fafb; }
+
+/* TipTap editor placeholder */
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #9ca3af;
+  pointer-events: none;
+  height: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0ms !important; animation-duration: 0ms !important; }
+}

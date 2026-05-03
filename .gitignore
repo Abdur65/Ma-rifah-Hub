@@ -1,0 +1,47 @@
+# Planning & design artifacts (local only)
+docs/
+design/
+design-system/
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-ssr/
+
+# Environment — never commit secrets
+.env
+.env.local
+.env.*.local
+
+# Supabase local dev (docker volumes, temp files)
+supabase/.branches/
+supabase/.temp/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+bun-debug.log*
+
+# TypeScript build cache
+*.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
