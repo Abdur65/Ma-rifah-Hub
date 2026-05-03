@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Navbar } from '@/components/Navbar'
+import { MdOutlineMosque } from 'react-icons/md'
 
 export const Route = createFileRoute('/')({
   component: HomePage,
@@ -53,7 +54,7 @@ function HomePage() {
             title="Islam"
             subtitle="Fasting, Prayer, Inheritance, Hajj, Umrah — structured entries drawn from primary sources."
             theme="islam"
-            icon={<MoonIcon />}
+            icon={<MdOutlineMosque className='text-white w-7 h-7'/>}
           />
           <SectionCard
             to="/general-knowledge"

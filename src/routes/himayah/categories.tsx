@@ -11,12 +11,17 @@ export const Route = createFileRoute('/himayah/categories')({
 
 const AVAILABLE_ICONS = [
   'GiPrayer',
+  'GiMeal',
   'GiConcentricCrescents',
   'GiSamaraMosque',
+  'FaMosque',
+  'FaKaaba',
   'GiBlood',
   'GiWheat',
   'FaScaleBalanced',
   'MdElectricBolt',
+  'MdOutlineMosque',
+  'MdOutlineBloodtype',
 ]
 
 function slugify(str: string) {
