@@ -10,6 +10,7 @@ export type Category = {
   name: string;
   slug: string;
   icon_name: string;
+  description: string | null;
 };
 
 export type Entry = {
@@ -40,7 +41,9 @@ export type Database = {
       };
       categories: {
         Row: Category;
-        Insert: Omit<Category, "id">;
+        Insert: Omit<Category, "id" | "description"> & {
+          description?: string | null;
+        };
         Update: Partial<Omit<Category, "id">>;
         Relationships: [
           {

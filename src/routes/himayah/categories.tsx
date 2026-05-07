@@ -7,27 +7,11 @@ import {
   createCategory,
   deleteCategory,
 } from "@/lib/adminQueries";
-import { CategoryIcon } from "@/components/CategoryIcon";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 
 export const Route = createFileRoute("/himayah/categories")({
   component: CategoriesPage,
 });
-
-const AVAILABLE_ICONS = [
-  "GiPrayer",
-  "GiMeal",
-  "GiConcentricCrescents",
-  "GiSamaraMosque",
-  "FaMosque",
-  "FaKaaba",
-  "GiBlood",
-  "GiWheat",
-  "FaScaleBalanced",
-  "MdElectricBolt",
-  "MdOutlineMosque",
-  "MdOutlineBloodtype",
-];
 
 function slugify(str: string) {
   return str
@@ -57,7 +41,7 @@ function CategoriesPage() {
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [slugTouched, setSlugTouched] = useState(false);
-  const [icon, setIcon] = useState(AVAILABLE_ICONS[0]);
+  const [description, setDescription] = useState("");
   const [formError, setFormError] = useState("");
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
@@ -73,7 +57,8 @@ function CategoriesPage() {
         section_id: activeSectionId,
         name: name.trim(),
         slug: slug.trim(),
-        icon_name: icon,
+        icon_name: "",
+        description: description.trim() || null,
       });
     },
     onSuccess: () => {
@@ -82,7 +67,7 @@ function CategoriesPage() {
       setName("");
       setSlug("");
       setSlugTouched(false);
-      setIcon(AVAILABLE_ICONS[0]);
+      setDescription("");
       setFormError("");
     },
     onError: (err: Error) => {
@@ -170,10 +155,9 @@ function CategoriesPage() {
             {sectionCategories.map((cat) => (
               <li key={cat.id} className="flex items-center gap-4 px-6 py-4">
                 <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
-                  <CategoryIcon
-                    name={cat.icon_name}
-                    className="w-4 h-4 text-slate-600"
-                  />
+                  <span className="text-sm font-semibold text-slate-600 font-[family-name:var(--font-lora)]">
+                    {cat.name.charAt(0).toUpperCase()}
+                  </span>
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-slate-800">
@@ -265,27 +249,19 @@ function CategoriesPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-slate-600 mb-2">
-              Icon
+            <label className="block text-xs font-medium text-slate-600 mb-1.5">
+              Description{" "}
+              <span className="text-slate-400 font-normal">
+                — optional, shown on the category card
+              </span>
             </label>
-            <div className="grid grid-cols-7 gap-2">
-              {AVAILABLE_ICONS.map((iconName) => (
-                <button
-                  key={iconName}
-                  type="button"
-                  onClick={() => setIcon(iconName)}
-                  title={iconName}
-                  className={`flex flex-col items-center gap-1 p-2.5 rounded-xl border transition-all cursor-pointer ${
-                    icon === iconName
-                      ? "border-slate-800 bg-slate-800 text-white"
-                      : "border-slate-200 hover:border-slate-400 text-slate-600"
-                  }`}
-                >
-                  <CategoryIcon name={iconName} className="w-5 h-5" />
-                </button>
-              ))}
-            </div>
-            <p className="text-xs text-slate-400 mt-1.5">Selected: {icon}</p>
+            <textarea
+              rows={2}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="e.g. Rules and conditions of the fast, what breaks it, and expiation."
+              className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-300 resize-none"
+            />
           </div>
 
           {formError && <p className="text-sm text-red-500">{formError}</p>}

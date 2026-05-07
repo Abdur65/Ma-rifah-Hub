@@ -1,7 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { getSection, getCategory, getEntriesByCategory } from "@/lib/queries";
-import { CategoryIcon } from "@/components/CategoryIcon";
 import { EntryCard } from "@/components/EntryCard";
 import { Navbar } from "@/components/Navbar";
 
@@ -77,10 +76,9 @@ function CategoryPage() {
           <div
             className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${iconBg}`}
           >
-            <CategoryIcon
-              name={category.icon_name}
-              className="w-5 h-5 text-white"
-            />
+            <span className="text-base font-semibold font-[family-name:var(--font-lora)] text-white">
+              {category.name.charAt(0).toUpperCase()}
+            </span>
           </div>
           <div>
             <p className="text-xs text-stone-400 uppercase tracking-widest mb-0.5">

@@ -57,6 +57,9 @@ body {
 .tiptap-content td    { border: 1px solid #e5e7eb; padding: 0.5rem 0.75rem; text-align: left; }
 .tiptap-content th    { font-weight: 600; background: #f9fafb; }
 
+/* TipTap table — selected cell highlight (editor only) */
+.tiptap-content .selectedCell { background: #dbeafe; }
+
 /* TipTap editor placeholder */
 .tiptap p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);

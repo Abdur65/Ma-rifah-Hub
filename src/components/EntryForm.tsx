@@ -4,6 +4,10 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
+import { Table } from "@tiptap/extension-table";
+import { TableRow } from "@tiptap/extension-table-row";
+import { TableCell } from "@tiptap/extension-table-cell";
+import { TableHeader } from "@tiptap/extension-table-header";
 import {
   getAllSections,
   getAllCategories,
@@ -102,6 +106,10 @@ export function EntryForm({
       StarterKit,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Placeholder.configure({ placeholder: "Write the entry body here…" }),
+      Table.configure({ resizable: false }),
+      TableRow,
+      TableHeader,
+      TableCell,
     ],
     content: initial?.body ?? "",
     editorProps: {
@@ -439,6 +447,52 @@ function TipTapToolbar({ editor }: { editor: Editor }) {
         "Align left",
         "LTR",
       )}
+      <div className="w-px h-5 bg-slate-200 mx-1" />
+      {btn(
+        false,
+        () =>
+          editor
+            .chain()
+            .focus()
+            .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+            .run(),
+        "Insert table",
+        <TableIcon />,
+      )}
+      {editor.isActive("table") && (
+        <>
+          {btn(
+            false,
+            () => editor.chain().focus().addRowAfter().run(),
+            "Add row",
+            "+Row",
+          )}
+          {btn(
+            false,
+            () => editor.chain().focus().deleteRow().run(),
+            "Delete row",
+            "-Row",
+          )}
+          {btn(
+            false,
+            () => editor.chain().focus().addColumnAfter().run(),
+            "Add column",
+            "+Col",
+          )}
+          {btn(
+            false,
+            () => editor.chain().focus().deleteColumn().run(),
+            "Delete column",
+            "-Col",
+          )}
+          {btn(
+            false,
+            () => editor.chain().focus().deleteTable().run(),
+            "Delete table",
+            "×Tbl",
+          )}
+        </>
+      )}
     </div>
   );
 }
@@ -474,6 +528,24 @@ function OrderedListIcon() {
         strokeLinejoin="round"
         strokeWidth={2}
         d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"
+      />
+    </svg>
+  );
+}
+
+function TableIcon() {
+  return (
+    <svg
+      className="w-4 h-4"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M3 10h18M3 14h18M10 3v18M3 6a3 3 0 013-3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6z"
       />
     </svg>
   );

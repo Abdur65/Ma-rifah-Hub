@@ -1,7 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { getSection, getCategoriesBySection } from "@/lib/queries";
-import { CategoryIcon } from "@/components/CategoryIcon";
 import { Navbar } from "@/components/Navbar";
 import type { Category } from "@/types/database";
 
@@ -37,13 +36,6 @@ function SectionPage() {
   const headerBg = isIslam ? "bg-islam-primary" : "bg-gk-primary";
   const surface = isIslam ? "bg-islam-surface" : "bg-gk-surface";
   const border = isIslam ? "border-islam-border" : "border-gk-border";
-  const hoverBorder = isIslam
-    ? "hover:border-islam-accent"
-    : "hover:border-gk-primary";
-  const iconHoverBg = isIslam
-    ? "group-hover:bg-islam-primary group-hover:border-islam-primary"
-    : "group-hover:bg-gk-primary group-hover:border-gk-primary";
-  const ctaColor = isIslam ? "text-islam-accent" : "text-gk-primary";
   const subtitle = isIslam
     ? "Structured entries on Islamic obligations, rituals, and rulings."
     : "Clear reference entries on science, medicine, and applied disciplines.";
@@ -103,11 +95,6 @@ function SectionPage() {
               key={cat.id}
               category={cat}
               sectionSlug={sectionSlug}
-              border={border}
-              hoverBorder={hoverBorder}
-              surface={surface}
-              iconHoverBg={iconHoverBg}
-              ctaColor={ctaColor}
               isIslam={isIslam}
             />
           ))}
@@ -125,54 +112,46 @@ function SectionPage() {
   );
 }
 
-type CategoryCardProps = {
-  category: Category;
-  sectionSlug: string;
-  border: string;
-  hoverBorder: string;
-  surface: string;
-  iconHoverBg: string;
-  ctaColor: string;
-  isIslam: boolean;
-};
-
 function CategoryCard({
   category,
   sectionSlug,
-  border,
-  hoverBorder,
-  surface,
-  iconHoverBg,
-  ctaColor,
   isIslam,
-}: CategoryCardProps) {
-  const primaryColor = isIslam ? "text-islam-primary" : "text-gk-primary";
+}: {
+  category: Category;
+  sectionSlug: string;
+  isIslam: boolean;
+}) {
+  const accentBg = isIslam ? "bg-islam-primary" : "bg-gk-primary";
+  const cardSurface = isIslam ? "bg-islam-surface" : "bg-gk-surface";
+
   return (
     <Link
       to="/$section/$category"
       params={{ section: sectionSlug, category: category.slug }}
-      className="group cursor-pointer"
+      className={`group relative block overflow-hidden rounded-lg border-2 ${isIslam ? "border-islam-border" : "border-gk-border"} ${cardSurface} p-8`}
     >
+      {/* Expanding hover circle — starts at top-right corner, fills card on hover */}
       <div
-        className={`bg-white border-2 rounded-2xl p-7 h-full flex flex-col hover:shadow-md transition-all duration-200 ${border} ${hoverBorder}`}
+        className={`pointer-events-none absolute -right-4 -top-4 h-8 w-8 rounded-full ${accentBg} transition-transform duration-300 ease-out group-hover:scale-[21]`}
+      />
+
+      {/* Corner arrow indicator */}
+      <div
+        className={`absolute right-0 top-0 z-10 flex h-8 w-8 items-center justify-center rounded-bl-3xl rounded-tr-lg ${accentBg}`}
       >
-        <div
-          className={`w-12 h-12 rounded-xl border flex items-center justify-center mb-5 transition-colors duration-200 ${surface} ${border} ${iconHoverBg}`}
-        >
-          <CategoryIcon
-            name={category.icon_name}
-            className={`w-6 h-6 ${primaryColor} group-hover:text-white transition-colors duration-200`}
-          />
-        </div>
-        <h3 className="font-[family-name:var(--font-lora)] text-xl font-semibold text-stone-800 mb-2">
+        <span className="-mr-0.5 -mt-0.5 font-mono text-sm text-white">→</span>
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10">
+        <p className="font-[family-name:var(--font-lora)] text-lg font-semibold text-stone-800 transition-colors duration-300 group-hover:text-white">
           {category.name}
-        </h3>
-        <div
-          className={`flex items-center gap-1 mt-auto pt-5 text-xs font-medium group-hover:gap-2 transition-all duration-200 ${ctaColor}`}
-        >
-          <span>View entries</span>
-          <Chevron />
-        </div>
+        </p>
+        {category.description && (
+          <p className="mt-2 text-sm leading-relaxed text-stone-500 transition-colors duration-300 group-hover:text-white/80">
+            {category.description}
+          </p>
+        )}
       </div>
     </Link>
   );

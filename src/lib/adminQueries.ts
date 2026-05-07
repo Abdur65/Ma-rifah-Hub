@@ -37,6 +37,7 @@ export const createCategory = async (data: {
   name: string;
   slug: string;
   icon_name: string;
+  description?: string | null;
 }) => supabase.from("categories").insert(data).select().single();
 
 export const deleteCategory = async (id: number) =>
