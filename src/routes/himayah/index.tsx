@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { getAllEntries, deleteEntry } from "@/lib/adminQueries";
+import { getAllEntries, deleteEntry, getAllSections } from "@/lib/adminQueries";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 
 export const Route = createFileRoute("/himayah/")({
@@ -12,10 +12,22 @@ function AdminDashboard() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [activeSection, setActiveSection] = useState<number | null>(null);
 
-  const { data: entries, isLoading } = useQuery({
+  const { data: sections = [] } = useQuery({
+    queryKey: ["admin-sections"],
+    queryFn: () => getAllSections().then((r) => r.data ?? []),
+  });
+
+  const { data: allEntries, isLoading } = useQuery({
     queryKey: ["admin-entries"],
     queryFn: () => getAllEntries().then((r) => r.data ?? []),
+  });
+
+  const activeSectionId = activeSection ?? sections[0]?.id ?? null;
+  const entries = allEntries?.filter((entry) => {
+    const cat = entry.category as { section: { id: number } } | null;
+    return cat?.section?.id === activeSectionId;
   });
 
   const deleteMutation = useMutation({
@@ -46,6 +58,23 @@ function AdminDashboard() {
         </Link>
       </div>
 
+      {/* Section tabs */}
+      <div className="flex gap-2 mb-8">
+        {sections.map((section) => (
+          <button
+            key={section.id}
+            onClick={() => setActiveSection(section.id)}
+            className={`px-5 py-2 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
+              activeSectionId === section.id
+                ? "bg-slate-800 text-white"
+                : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
+            }`}
+          >
+            {section.name}
+          </button>
+        ))}
+      </div>
+
       {isLoading && (
         <div className="flex justify-center py-20">
           <div className="w-8 h-8 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin" />
@@ -54,7 +83,7 @@ function AdminDashboard() {
 
       {!isLoading && entries?.length === 0 && (
         <div className="text-center py-20">
-          <p className="text-slate-400 text-sm">No entries yet.</p>
+          <p className="text-slate-400 text-sm">No entries in this section.</p>
           <Link
             to="/himayah/new"
             className="text-slate-600 text-sm underline mt-2 inline-block"

@@ -20,7 +20,17 @@ export function EntryCard({ entry, theme, linkHref }: Props) {
     theme === "islam" ? "text-islam-primary" : "text-gk-primary";
 
   const sanitizedBody = DOMPurify.sanitize(entry.body, {
-    ADD_TAGS: ["table", "thead", "tbody", "tfoot", "tr", "th", "td", "colgroup", "col"],
+    ADD_TAGS: [
+      "table",
+      "thead",
+      "tbody",
+      "tfoot",
+      "tr",
+      "th",
+      "td",
+      "colgroup",
+      "col",
+    ],
     ADD_ATTR: ["colspan", "rowspan", "scope"],
   });
 
